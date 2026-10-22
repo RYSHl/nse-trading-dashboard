@@ -19,6 +19,26 @@ export interface WatchlistResponse {
   [key: string]: unknown;
 }
 
+export interface ScannerResult {
+  symbol: string;
+  price?: number | null;
+  change_percent?: number | null;
+  sma20?: number | null;
+  sma50?: number | null;
+  rsi14?: number | null;
+  signal?: string | null;
+  data_date?: string | null;
+  [key: string]: unknown;
+}
+
+export interface ScannerResponse {
+  count?: number;
+  source?: string;
+  data_type?: string;
+  results?: ScannerResult[];
+  [key: string]: unknown;
+}
+
 export interface MarketSummary {
   symbol: string;
   price?: number;

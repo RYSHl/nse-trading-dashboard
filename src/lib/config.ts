@@ -3,7 +3,12 @@
 
 const STORAGE_KEY = 'nse_api_base_url';
 
-const DEFAULT_API_BASE_URL = 'https://nse-algo-trading-2l1a.onrender.com';
+const FALLBACK_API_BASE_URL = 'https://nse-algo-trading-2l1a.onrender.com';
+
+// Build-time configured API base URL, with hardcoded fallback.
+const ENV_API_BASE_URL: string | undefined = import.meta.env.VITE_API_BASE_URL as string | undefined;
+
+const DEFAULT_API_BASE_URL = ENV_API_BASE_URL || FALLBACK_API_BASE_URL;
 
 export function getApiBaseUrl(): string {
   try {

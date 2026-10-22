@@ -3,6 +3,8 @@ import type {
   HealthResponse,
   WatchlistResponse,
   WatchlistSymbol,
+  ScannerResponse,
+  ScannerResult,
 } from '../types';
 
 export class ApiError extends Error {
@@ -102,4 +104,28 @@ function normalizeSymbols(data: WatchlistResponse): WatchlistSymbol[] {
     );
   }
   return [];
+}
+
+export async function fetchScanner(): Promise<{
+  ok: boolean;
+  data?: ScannerResponse;
+  error?: string;
+}> {
+  try {
+    const data = await request<ScannerResponse>('/scanner');
+    return { ok: true, data };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : 'Unknown error',
+    };
+  }
+}
+
+export function isResultAvailable(r: ScannerResult): boolean {
+  return (
+    r.price !== undefined &&
+    r.price !== null &&
+    !isNaN(Number(r.price))
+  );
 }
