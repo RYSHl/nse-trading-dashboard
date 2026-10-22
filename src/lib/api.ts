@@ -129,3 +129,56 @@ export function isResultAvailable(r: ScannerResult): boolean {
     !isNaN(Number(r.price))
   );
 }
+
+export interface BacktestApiResponse {
+  symbol: string;
+  data_source: string;
+  data_date: string;
+  summary: {
+    strategy: string;
+    ema_fast_period: number;
+    ema_slow_period: number;
+    rows: number;
+    initial_capital: number;
+    final_equity: number;
+    total_return_pct: number;
+    buy_hold_return_pct: number;
+    cagr_pct_approx: number | null;
+    max_drawdown_pct: number;
+    entries: number;
+    fee_bps_per_side_assumption: number;
+    slippage_bps_per_side_assumption: number;
+    sharpe_like_per_bar_not_annualized: number | null;
+    warning: string;
+  };
+  equity_curve: {
+    date: string;
+    equity: number;
+    buy_hold_equity: number;
+  }[];
+  warning: string;
+}
+
+export async function fetchBacktest(params: {
+  symbol: string;
+  fast: number;
+  slow: number;
+  initialCapital: number;
+  feeBps: number;
+  slippageBps: number;
+}): Promise<BacktestApiResponse> {
+  const query = new URLSearchParams({
+    symbol: params.symbol,
+    fast: String(params.fast),
+    slow: String(params.slow),
+    initial_capital: String(params.initialCapital),
+    fee_bps: String(params.feeBps),
+    slippage_bps: String(params.slippageBps),
+  });
+
+  return request<BacktestApiResponse>(
+    `/backtest?${query.toString()}`,
+    undefined,
+    60000,
+  );
+}
