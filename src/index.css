@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    border-color: theme('colors.terminal.700');
+  }
+
+  body {
+    background-color: theme('colors.terminal.950');
+    color: theme('colors.terminal.100');
+    font-family: theme('fontFamily.sans');
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: theme('colors.terminal.900');
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: theme('colors.terminal.600');
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: theme('colors.terminal.500');
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-terminal-850 border border-terminal-700/70 rounded-xl shadow-card;
+  }
+
+  .card-hover {
+    @apply transition-all duration-200 hover:border-terminal-600 hover:shadow-glow;
+  }
+
+  .stat-label {
+    @apply text-xs font-medium uppercase tracking-wider text-terminal-300;
+  }
+
+  .stat-value {
+    @apply font-mono text-2xl font-semibold text-terminal-100;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+}
