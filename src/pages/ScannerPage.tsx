@@ -60,11 +60,52 @@ const [sortDirection, setSortDirection] = useState('asc');
     return scannerData?.results ?? [];
   }, [scannerData]);
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toUpperCase();
-    if (!q) return results;
-    return results.filter((r) => (r.symbol ?? '').includes(q));
-  }, [results, query]);
+  
+const filtered = useMemo(() => {
+  const q = query.trim().toUpperCase();
+
+  const rows = results.filter((r) => {
+    const matchesSearch = (r.symbol ?? '').toUpperCase().includes(q);
+    const signal = (r.signal ?? '').toUpperCase();
+
+    const matchesTrend =
+      trendFilter === 'ALL' ||
+      (trendFilter === 'BULLISH' &&
+        (signal.includes('BUY') ||
+          signal.includes('BULL') ||
+          signal.includes('UP'))) ||
+      (trendFilter === 'BEARISH' &&
+        (signal.includes('SELL') ||
+          signal.includes('BEAR') ||
+          signal.includes('DOWN'))) ||
+      (trendFilter === 'NEUTRAL' &&
+        (signal.includes('HOLD') ||
+          signal.includes('NEUTRAL') ||
+          signal.includes('WAIT')));
+
+    return matchesSearch && matchesTrend;
+  });
+
+  return rows.sort((a, b) => {
+    let comparison = 0;
+
+    if (sortBy === 'symbol') {
+      comparison = (a.symbol ?? '').localeCompare(b.symbol ?? '');
+    } else {
+      const getValue = (r: ScannerResult) => {
+        if (sortBy === 'price') return r.price ?? -Infinity;
+        if (sortBy === 'change') return r.change_percent ?? -Infinity;
+        if (sortBy === 'rsi') return r.rsi14 ?? -Infinity;
+        return 0;
+      };
+
+      comparison = getValue(a) - getValue(b);
+    }
+
+    return sortDirection === 'asc' ? comparison : -comparison;
+  });
+}, [results, query, trendFilter, sortBy, sortDirection]);
+
 
   const lastUpdated = scannerData?.source ? scannerData.source : null;
   const count = scannerData?.count ?? results.length;
