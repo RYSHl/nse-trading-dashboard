@@ -153,6 +153,55 @@ const filtered = useMemo(() => {
           </div>
 
           {/* Data source badge */}
+
+          
+{/* Scanner filters */}
+<div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+  <div>
+    <label className="stat-label block mb-2">Trend</label>
+    <select
+      value={trendFilter}
+      onChange={(e) => setTrendFilter(e.target.value)}
+      className="w-full rounded-lg bg-terminal-800 border border-terminal-700 px-3 py-2.5 text-sm text-terminal-100"
+    >
+      <option value="ALL">All signals</option>
+      <option value="BULLISH">Bullish</option>
+      <option value="BEARISH">Bearish</option>
+      <option value="NEUTRAL">Neutral</option>
+    </select>
+  </div>
+
+  <div>
+    <label className="stat-label block mb-2">Sort by</label>
+    <select
+      value={sortBy}
+      onChange={(e) => setSortBy(e.target.value)}
+      className="w-full rounded-lg bg-terminal-800 border border-terminal-700 px-3 py-2.5 text-sm text-terminal-100"
+    >
+      <option value="symbol">Symbol</option>
+      <option value="price">Price</option>
+      <option value="change">Change %</option>
+      <option value="rsi">RSI14</option>
+    </select>
+  </div>
+
+  <div>
+    <label className="stat-label block mb-2">Order</label>
+    <select
+      value={sortDirection}
+      onChange={(e) => setSortDirection(e.target.value)}
+      className="w-full rounded-lg bg-terminal-800 border border-terminal-700 px-3 py-2.5 text-sm text-terminal-100"
+    >
+      <option value="asc">Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+  </div>
+</div>
+
+<p className="text-xs text-terminal-400">
+  Showing {filtered.length} of {results.length} symbols.
+</p>
+
           {lastUpdated && (
             <div className="flex items-center gap-2 text-xs text-terminal-300">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-bull" />
