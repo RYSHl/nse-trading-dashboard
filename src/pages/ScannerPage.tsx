@@ -46,6 +46,10 @@ export function ScannerPage() {
   const { apiStatus, autoRefresh, refreshInterval } = useAppContext();
   const [query, setQuery] = useState('');
 
+  const [trendFilter, setTrendFilter] = useState('ALL');
+const [sortBy, setSortBy] = useState('symbol');
+const [sortDirection, setSortDirection] = useState('asc');
+
   const { data: scannerData, loading, error, refetch } = useAsync(
     () => fetchScanner().then((r) => ({ ok: r.ok, data: r.data, error: r.error })),
     [],
